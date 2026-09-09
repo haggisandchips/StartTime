@@ -64,7 +64,7 @@ public partial class MainWindow : Window
 
     private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.OriginalSource is not Button)
+        if (e.OriginalSource is not Button && !ReferenceEquals(e.OriginalSource, UpdateText))
             DragMove();
     }
 

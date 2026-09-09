@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.1.1] - 2026-09-09
+
+### Fixed
+
+- "Click to restart now" prompt did nothing: clicking it also started
+  the window's drag-to-move behavior, which captured the mouse and
+  swallowed the click before it reached the restart handler.
+
 ## [1.1.0] - 2026-09-09
 
 ### Added
