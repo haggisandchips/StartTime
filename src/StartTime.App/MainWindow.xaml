@@ -1,7 +1,7 @@
 <Window x:Class="StartTime.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="StartTime"
+        Title="Estimated Start Time"
         Icon="Assets/AppIcon.ico"
         Height="150" Width="400"
         WindowStyle="None"
