@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.1.3] - 2026-09-09
+
+### Fixed
+
+- v1.1.2 only renamed the invisible OS window title (used for Alt-Tab),
+  not the visible in-panel header, which still read "EARLIEST EVENT
+  TODAY". The panel header now reads "ESTIMATED START TIME".
+
 ## [1.1.2] - 2026-09-09
 
 ### Changed

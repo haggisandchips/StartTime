@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="EARLIEST EVENT TODAY"
+                       Text="ESTIMATED START TIME"
                        FontSize="11" FontWeight="Bold" Foreground="#60A5FA"
                        VerticalAlignment="Center"/>
             <Button Grid.Row="0" Grid.Column="1" x:Name="CloseButton" Content="&#x2715;"
