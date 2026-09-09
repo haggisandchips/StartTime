@@ -1,0 +1,78 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g. 1.2.0)"
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  APP_ID: StartTime
+  APP_PROJECT: src/StartTime.App/StartTime.App.csproj
+  RID: win-x64
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $version = "${{ inputs.version }}"
+          } else {
+            $version = "${{ github.ref_name }}" -replace '^v', ''
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore StartTime.sln
+
+      - name: Test
+        run: dotnet test StartTime.sln --configuration Release --no-restore
+
+      - name: Publish app
+        run: >
+          dotnet publish ${{ env.APP_PROJECT }}
+          -c Release -r ${{ env.RID }} --self-contained true
+          -p:Version=${{ steps.version.outputs.version }}
+          -o publish
+
+      - name: Install Velopack CLI
+        run: dotnet tool install -g vpk
+
+      - name: Pack release with Velopack
+        run: >
+          vpk pack
+          -u ${{ env.APP_ID }}
+          -v ${{ steps.version.outputs.version }}
+          -p publish
+          -e StartTime.exe
+          -o release
+          --packTitle "StartTime"
+          --packAuthors "StartTime"
+
+      - name: Publish GitHub release
+        run: >
+          vpk upload github
+          --repoUrl https://github.com/${{ github.repository }}
+          --token ${{ secrets.GITHUB_TOKEN }}
+          --tag v${{ steps.version.outputs.version }}
+          --publish
+          -o release
