@@ -13,6 +13,14 @@
         WindowStartupLocation="Manual"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         KeyDown="Window_KeyDown">
+    <Window.Resources>
+        <Storyboard x:Key="ClockSpin">
+            <DoubleAnimation Storyboard.TargetName="SecondHandRotate" Storyboard.TargetProperty="Angle"
+                              From="0" To="360" Duration="0:0:2" RepeatBehavior="Forever"/>
+            <DoubleAnimation Storyboard.TargetName="MinuteHandRotate" Storyboard.TargetProperty="Angle"
+                              From="0" To="360" Duration="0:0:9" RepeatBehavior="Forever"/>
+        </Storyboard>
+    </Window.Resources>
     <Border Background="#1F2937" CornerRadius="10" BorderBrush="#3B82F6" BorderThickness="1.5">
         <Border.Effect>
             <DropShadowEffect Color="Black" BlurRadius="18" ShadowDepth="3" Opacity="0.45"/>
@@ -37,11 +45,35 @@
                     BorderThickness="0" Foreground="#9CA3AF" FontSize="13"
                     Cursor="Hand" Click="CloseButton_Click" ToolTip="Close (ends StartTime)"/>
 
-            <TextBlock x:Name="TimestampText" Grid.Row="1" Grid.ColumnSpan="2"
-                       Text="Scanning..."
-                       FontSize="52" FontWeight="Bold" Foreground="White"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                       TextAlignment="Center"/>
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <StackPanel x:Name="LoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Canvas Width="44" Height="44" HorizontalAlignment="Center">
+                        <Ellipse Width="44" Height="44" Stroke="#3B82F6" StrokeThickness="2"/>
+                        <Line X1="22" Y1="22" X2="22" Y2="7" Stroke="#60A5FA" StrokeThickness="2.5"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                            <Line.RenderTransform>
+                                <RotateTransform x:Name="MinuteHandRotate" Angle="0" CenterX="22" CenterY="22"/>
+                            </Line.RenderTransform>
+                        </Line>
+                        <Line X1="22" Y1="22" X2="22" Y2="10" Stroke="#F59E0B" StrokeThickness="1.5"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                            <Line.RenderTransform>
+                                <RotateTransform x:Name="SecondHandRotate" Angle="0" CenterX="22" CenterY="22"/>
+                            </Line.RenderTransform>
+                        </Line>
+                        <Ellipse Width="5" Height="5" Canvas.Left="19.5" Canvas.Top="19.5" Fill="#E5E7EB"/>
+                    </Canvas>
+                    <TextBlock x:Name="LoadingCaption" Text="Scanning event log..."
+                               FontSize="11" Foreground="#9CA3AF"
+                               HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                </StackPanel>
+
+                <TextBlock x:Name="TimestampText"
+                           Text="" Opacity="0"
+                           FontSize="52" FontWeight="Bold" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           TextAlignment="Center"/>
+            </Grid>
 
             <TextBlock x:Name="UpdateText" Grid.Row="2" Grid.ColumnSpan="2"
                        Text="" FontSize="11" FontWeight="SemiBold" Foreground="#34D399"
